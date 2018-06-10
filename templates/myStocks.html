@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+	<h1> Welcome {{session.username}}<br>My Stocks</h1> <h3><div align="right">Cash: {{session.cash}}</div></h3>
+	<hr>
+
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Ticker</th>
+			<th>Volume</th>
+			<th>Current Price</th>
+			<th>Volume</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for stock in mystocks %}
+			<tr>
+				<td>{{stock.ticker}}</td>
+				<td>{{stock.myvolume}}</td>
+				<td>{{stock.current_price}}</td>
+				<td>
+					<form action="{{url_for('sell_stock', ticker=stock.ticker, current_price=stock.current_price, myvolume=stock.myvolume)}}" method="post">
+						<input type="hidden" name="_method" value="DELETE">
+						<input type="number" name="volume" min="1">
+						<input type="submit" value="Sell" class="btn btn-primary">
+					</form>
+				</td>
+
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+
+<br><hr><br>
+
+
+	<h1>My Transactions</h1>
+	<hr>
+
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Ticker</th>
+			<th>Transaction Date</th>
+			<th>Volume</th>
+			<th>Bought/Sold At</th>
+			<th>Transaction Type</th>
+		</tr>
+		</thead>
+
+		<tbody>
+		{% for transaction in mytransactions %}
+			<tr>
+				<td>{{transaction.ticker}}</td>
+				<td>{{transaction.trans_date}}</td>
+				<td>{{transaction.volume}}</td>
+				<td>{{transaction.current_price}}</td>
+				<td>{{transaction.type}}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+
+{% endblock %}

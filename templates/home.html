@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="jumbotron vertical-center text-center">
+	<h1>Welcome to VirtualStockExchange</h1>
+	<p class="lead">This is a game that simulates a Stock Market and lets users buy and sell stocks.</p>
+	{% if session.logged_in == NULL %}
+		<a href="/register" class="btn btn-primary btn-lg">Register</a>
+		<a href="/login" class="btn btn-success btn-lg">login</a>
+	{% endif %}
+</div>
+{% endblock %}

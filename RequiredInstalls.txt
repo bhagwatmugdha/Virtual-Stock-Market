@@ -1,0 +1,7 @@
+sudo apt-get install python3-pip
+pip install flask
+sudo apt-get install mysql-server libmysqlclient-dev
+
+pip install flask-mysqldb
+pip install Flask-WTF
+pip install passlib

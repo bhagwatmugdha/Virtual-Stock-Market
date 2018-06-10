@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!meta http-equiv="refresh" content="5">
+	<meta charset="utf-8">
+	<title>VirtualStockExchange</title>
+
+	<link rel="icon" href="https://cdn2.iconfinder.com/data/icons/wsd-business-2/64/wsd-business-01-512.png" type="image/gif" sizes="16x16">
+
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body background="https://images.pexels.com/photos/139387/pexels-photo-139387.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260">
+<!   https://images.pexels.com/photos/860379/pexels-photo-860379.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260>
+<!	https://images.pexels.com/photos/102152/pexels-photo-102152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260>
+	{% include 'includes/_navbar.html' %}
+
+	<div class="container">
+	{% include 'includes/_messages.html' %}
+	{% block body %}{% endblock%}
+	</div>
+
+	{% include 'includes/_footer.html' %}
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="//cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+	<script type="text/javascript">
+		CKEDITOR.replace('editor')
+	</script>
+</body>
+</html>

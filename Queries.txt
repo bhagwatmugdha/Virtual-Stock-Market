@@ -1,0 +1,40 @@
+CREATE DATABSE VSE;
+USE VSE;
+
+CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), password VARCHAR(100), cash INT(11) DEFAULT 1000);
+
+ALTER TABLE users ADD lastname VARCHAR(100) AFTER name;
+ALTER TABLE users ADD email VARCHAR(100) AFTER lastname;
+ALTER TABLE users ADD username VARCHAR(100) AFTER email;
+
+CREATE TABLE stocks(stock_id INT(11), ticker VARCHAR(5) PRIMARY KEY, company VARCHAR(100), avail_volume INT(11), price INT(11));
+ALTER TABLE stocks ADD arrow VARCHAR(100) AFTER PRICE;
+
+CREATE TABLE transactions(trans_id INT(11) AUTO_INCREMENT PRIMARY KEY, ticker VARCHAR(5), volume INT(11), type VARCHAR(10), current_price INT(11), trans_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+ALTER TABLE transactions ADD id INT(11);
+
+INSERT INTO stocks VALUES(1, 'AZN', 'Amazon', 500, 20),(2, 'ALE', 'Apple', 300, 15);
+
+INSERT INTO stocks VALUES(3, 'FBK', 'Facebook', 400, 15), (4, 'GLE', 'Google', 500, 15), (5, 'MST', 'Microsoft', 400, 10), (6, 'NFX', 'Netflix', 200, 65), (7, 'NKE', 'Nike', 100, 55), (8, 'PSE', 'Porsche', 100, 35), (9, 'SBS', 'Starbucks', 100, 56), (10, 'ZRA', 'Zara', 200, 10);
+
+
+SELECT transactions.ticker, SUM(volume) as volume, price FROM transactions LEFT JOIN stocks ON transactions.ticker=stocks.ticker WHERE id=1 GROUP BY ticker HAVING volume>0 ORDER BY ticker;
+
+DELIMITER //
+CREATE TRIGGER keepPricePositive BEFORE UPDATE ON stocks FOR EACH ROW BEGIN IF NEW.price <= 0 THEN SET NEW.price = OLD.price; END IF; END//
+DELIMITER ;
+
+SET GLOBAL event_scheduler = ON;
+CREATE EVENT increasePrice ON SCHEDULE EVERY 5 SECOND DO UPDATE stocks SET price = price + rand();
+CREATE EVENT decreasePrice ON SCHEDULE EVERY 7 SECOND DO UPDATE stocks SET price = price - rand();
+SET GLOBAL event_scheduler = OFF;
+
+
+DELIMITER //
+CREATE TRIGGER addUpArrow BEFORE UPDATE ON stocks FOR EACH ROW BEGIN IF NEW.PRICE > OLD.PRICE THEN SET NEW.arrow = "https://upload.wikimedia.org/wikipedia/commons/3/36/Up_green_arrow.png";END IF;END//
+// Black arrow: http://img2.3png.com/4cefea67e22a82c8c1f8622408e7e8ccef07.png
+
+CREATE TRIGGER addDownArrow BEFORE UPDATE ON stocks FOR EACH ROW BEGIN IF NEW.PRICE <= OLD.PRICE THEN SET NEW.arrow = "https://upload.wikimedia.org/wikipedia/commons/b/b0/Down_red_arrow.png";END IF;END//
+// Black arrow: http://www.yim778.com/data/out/26/716277.png
+DELIMITER ;
